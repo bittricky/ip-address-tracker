@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { Details, Search } from "../../components";
+import { Details, Search, Map } from "../../components";
 
 import { IPAddressData } from "../../types";
 
 const initialState: IPAddressData = {
   status: "empty",
-  outputs: [
+  details: [
     { heading: "IP Address", body: "" },
     { heading: "Location", body: "" },
     { heading: "Timezone", body: "" },
@@ -25,6 +25,8 @@ const Home: React.FC = () => {
 
   const fetchData = async (ip: string) => {
     try {
+      setIpData({ ...initialState, status: "loading" });
+
       const response = await fetch(`/api?ip=${ip}`, {
         method: "GET",
       });
@@ -39,7 +41,7 @@ const Home: React.FC = () => {
 
       setIpData({
         status: "loaded",
-        outputs: [
+        details: [
           { heading: "IP Address", body: data.ip || "N/A" },
           {
             heading: "Location",
@@ -81,9 +83,9 @@ const Home: React.FC = () => {
           handleChange={handleChange}
           handleSubmit={handleSubmit}
         />
-        <Details data={ipData} />
+        {ipData.status !== "empty" && <Details data={ipData} />}
       </header>
-      {/* TODO: Map component go here */}
+      <Map position={[ipData.location.lat, ipData.location.lng]} />
     </div>
   );
 };

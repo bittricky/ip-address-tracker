@@ -16,7 +16,7 @@ export const Details: React.FC<Props> = ({ data }) => {
         </p>
       </aside>
     );
-  } else if (data.status === "empty") {
+  } else if (data.status === "loading") {
     return (
       <aside className="relative z-30 mt-9 flex items-center w-auto min-h-[120px] bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
         <p
@@ -34,31 +34,30 @@ export const Details: React.FC<Props> = ({ data }) => {
           className="w-full text-center text-lg font-medium text-red-600"
           data-testid="invalid"
         >
-          IP Address is not a valid IP address or domain
+          Not a valid IP address or domain
         </p>
       </aside>
     );
   }
 
   return (
-    <aside className="relative z-30 mt-9 flex items-center w-[calc(100%-72rem)] min-h-[120px] bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
-      <ul className="flex flex-row justify-around items-center w-full h-[72%] m-0 p-0 list-none md:flex-col md:justify-center md:h-fit">
-        {data.outputs.map((output, index) => (
+    <aside className="relative z-30 mt-9 flex w-auto bg-white rounded-lg shadow-lg p-4 md:p-8">
+      <ul className="space-y-4 md:space-y-0 md:divide-y md:divide-gray-200">
+        {data.details.map((output, index) => (
           <li
             key={index}
-            className={`relative text-gray-700 ${
-              (index === data.outputs.length - 1 ? "true" : undefined)
-                ? ""
-                : "border-r border-gray-200"
-            } flex flex-col items-start justify-center p-4 md:text-center md:p-4 h-full w-full`}
+            className={`flex flex-col items-center space-y-2 p-2 md:flex-row md:items-start md:justify-between md:space-y-0 md:p-4 ${
+              index === 0 ? "rounded-tl-lg rounded-tr-lg" : ""
+            } ${
+              index === data.details.length - 1
+                ? "rounded-bl-lg rounded-br-lg"
+                : ""
+            }`}
           >
-            <h2 className="text-gray-400 text-xs font-medium uppercase tracking-wider -mt-1.5 mb-0">
+            <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider md:text-xs lg:text-sm">
               {output.heading}
             </h2>
-            <p
-              className="text-lg text-gray-700 mt-1.5 m-0 p-0 animate-fadeIn"
-              style={{ animation: "fadeIn 0.3s linear" }}
-            >
+            <p className="text-lg font-bold text-gray-800 md:text-base lg:text-lg">
               {output.body}
             </p>
           </li>

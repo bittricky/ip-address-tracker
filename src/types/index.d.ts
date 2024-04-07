@@ -9,7 +9,7 @@ export type Location = {
 };
 
 export type IPAddressData = {
-  status: "empty" | "loaded" | "error";
-  outputs: Output[];
+  status: "empty" | "loaded" | "loading" | "error";
+  details: Output[];
   location: Location;
 };
