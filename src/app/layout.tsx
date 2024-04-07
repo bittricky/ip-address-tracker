@@ -1,17 +1,23 @@
 import React, { PropsWithChildren } from "react";
-import Head from "next/head";
+import { Inter } from "next/font/google";
 
-const Layout: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-  return (
-    <html lang="en">
-      <Head>
-        <title>IP Address Tracker</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-      </Head>
-      <body>{children}</body>
-    </html>
-  );
+import { Metadata } from "next";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "IP Address Tracker",
+  description: "Simple Application to track location from IP Address",
 };
 
-export default Layout;
+export default function Layout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
+  );
+}
