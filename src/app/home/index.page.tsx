@@ -1,23 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search } from "../../components";
+import { Details, Search } from "../../components";
 
-type Output = {
-  heading: string;
-  body: string;
-};
-
-type Location = {
-  lat: number;
-  lng: number;
-};
-
-type IPAddressData = {
-  status: "empty" | "loaded" | "error";
-  outputs: Output[];
-  location: Location;
-};
+import { IPAddressData } from "../../types";
 
 const initialState: IPAddressData = {
   status: "empty",
@@ -42,8 +28,9 @@ const Home: React.FC = () => {
       const response = await fetch(`/api?ip=${ip}`, {
         method: "GET",
       });
+
       const data = await response.json();
-      console.log("data: ", data);
+
       if (!response.ok) {
         throw new Error(
           data.message || "An error occurred while fetching the data."
@@ -84,12 +71,19 @@ const Home: React.FC = () => {
 
   return (
     <div className="app">
-      <Search
-        ipAddress={inputValue}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-      />
-      {/* TODO: Map & Details component go here */}
+      <header
+        className="relative flex flex-col justify-between items-center w-full h-56 shadow-md text-black md:bg-auto md:bg-center lg:px-8"
+        style={{ background: "#ffe100" }}
+      >
+        <h1 className="font-normal text-xl">IP Address Tracker</h1>
+        <Search
+          ipAddress={inputValue}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
+        <Details data={ipData} />
+      </header>
+      {/* TODO: Map component go here */}
     </div>
   );
 };

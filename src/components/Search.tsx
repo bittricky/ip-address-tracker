@@ -6,7 +6,11 @@ interface Props {
   handleSubmit: (e: any) => void;
 }
 
-export const Search = ({ ipAddress, handleChange, handleSubmit }: Props) => {
+export const Search: React.FC<Props> = ({
+  ipAddress,
+  handleChange,
+  handleSubmit,
+}) => {
   return (
     <form onSubmit={handleSubmit} className="flex justify-center w-full p-0">
       <input
