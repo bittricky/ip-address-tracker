@@ -39,7 +39,7 @@ const Home: React.FC = () => {
 
   const fetchData = async (ip: string) => {
     try {
-      const response = await fetch(`/api/ip?ip=${encodeURIComponent(ip)}`, {
+      const response = await fetch(`/api?ip=${ip}`, {
         method: "GET",
       });
       const data = await response.json();
