@@ -5,7 +5,7 @@ interface Props {
 }
 
 export const Details: React.FC<Props> = ({ data }) => {
-  if (!data || (data.status !== "empty" && data.status !== "error")) {
+  if (!data) {
     return (
       <aside className="relative z-30 mt-9 flex items-center w-auto min-h-[120px] bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
         <p

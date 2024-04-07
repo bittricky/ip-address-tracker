@@ -29,7 +29,7 @@ const Home: React.FC = () => {
         method: "GET",
       });
 
-      const data = await response.json();
+      const { data } = await response.json();
 
       if (!response.ok) {
         throw new Error(
