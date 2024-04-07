@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import dynamic from "next/dynamic";
+import { useMap } from "react-leaflet";
 import L, { LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -9,7 +12,7 @@ type MapControllerProps = {
   center: LatLngExpression;
 };
 
-type MapProps = {
+type Map = {
   position: LatLngExpression;
 };
 
@@ -18,38 +21,62 @@ const locationIcon = new L.Icon({
   iconSize: [25, 32],
 });
 
-const MapController: React.FC<MapControllerProps> = ({ center }) => {
-  const map = useMap();
+const MapContainerNoSSR = dynamic(
+  () => import("react-leaflet").then((mod) => mod.MapContainer),
+  {
+    ssr: false,
+    loading: () => <p>Loading...</p>,
+  }
+);
 
-  useEffect(() => {
-    map.setView(center, map.getZoom());
-  }, [center, map]);
+const TileLayerNoSSR = dynamic(
+  () => import("react-leaflet").then((mod) => mod.TileLayer),
+  {
+    ssr: false,
+  }
+);
 
-  return null;
-};
+const MarkerNoSSR = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Marker),
+  {
+    ssr: false,
+  }
+);
 
-export const Map: React.FC<MapProps> = ({ position }) => {
+const PopupNoSSR = dynamic(
+  () => import("react-leaflet").then((mod) => mod.Popup),
+  {
+    ssr: false,
+  }
+);
+
+const MapController = dynamic(
+  () => import("./MapController").then((mod) => mod.MapController),
+  {
+    ssr: false,
+  }
+);
+
+export const Map: React.FC<Map> = ({ position }) => {
   if (!position) return null;
 
   return (
     <div className="h-[calc(100vh-215px)]" data-testid="mapView">
-      <MapContainer
+      <MapContainerNoSSR
         center={position}
         zoom={13}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
       >
-        <TileLayer
+        <TileLayerNoSSR
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Marker position={position} icon={locationIcon}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
+        <MarkerNoSSR position={position} icon={locationIcon}>
+          <PopupNoSSR>You are here!</PopupNoSSR>
+        </MarkerNoSSR>
         <MapController center={position} />
-      </MapContainer>
+      </MapContainerNoSSR>
     </div>
   );
 };
