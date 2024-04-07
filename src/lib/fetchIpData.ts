@@ -1,13 +1,15 @@
 const API_KEY = process.env.IPIFY_API_KEY;
+console.log(API_KEY);
 const BASE_URL = "https://geo.ipify.org/api/v2/country,city?";
 
-async function fetchIPData(ipAddress: string = ""): Promise<any> {
+async function fetchIpData(ipAddress: string = ""): Promise<any> {
   const url = new URL(BASE_URL);
 
   url.searchParams.append("apiKey", API_KEY);
 
   if (ipAddress) {
     url.searchParams.append("ipAddress", ipAddress);
+    console.log(url);
   }
 
   try {
@@ -25,4 +27,4 @@ async function fetchIPData(ipAddress: string = ""): Promise<any> {
   }
 }
 
-export default fetchIPData;
+export default fetchIpData;

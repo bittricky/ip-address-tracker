@@ -20,10 +20,13 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "strictNullChecks": true
   },
   "paths": {
-    "@/*": ["src/*"]
+    "@/*": [
+      "src/*"
+    ]
   },
   "include": [
     "next-env.d.ts",
