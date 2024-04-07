@@ -1,15 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextRequest } from "next/server";
 import fetchIpData from "../../lib/fetchIpData";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const ipAddress = (req.query.ip as string) || "";
+export async function GET(req: NextRequest) {
+  const searchParams = req.nextUrl.searchParams;
+  const ipAddress: string = searchParams.get("ip") || "";
+  const data = await fetchIpData(ipAddress);
 
-  try {
-    const data = await fetchIpData(ipAddress);
-    res.status(200).json(data);
-  } catch (error) {
-    res.status(500).json({ message: `Failed to fetch IP data` });
-  }
-};
-
-export default handler;
+  return Response.json({ data });
+}
