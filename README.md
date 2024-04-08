@@ -1,6 +1,6 @@
 # IP Address Tracker
 
-> Simple application to get location of an IP Address
+> Simple application to get the geolocation of an IP Address
 
 ## Prerequisites
 

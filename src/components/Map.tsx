@@ -61,12 +61,12 @@ export const Map: React.FC<Map> = ({ position }) => {
   if (!position) return null;
 
   return (
-    <div className="h-[calc(100vh-215px)]" data-testid="mapView">
+    <div className="relative h-[calc(100vh-215px)]" data-testid="mapView">
       <MapContainerNoSSR
         center={position}
         zoom={13}
         scrollWheelZoom={false}
-        style={{ height: "100%", width: "100%" }}
+        style={{ height: "100%", width: "100%", zIndex: 9 }}
       >
         <TileLayerNoSSR
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

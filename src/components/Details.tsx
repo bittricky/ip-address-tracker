@@ -7,7 +7,7 @@ interface Props {
 export const Details: React.FC<Props> = ({ data }) => {
   if (!data) {
     return (
-      <aside className="relative z-30 mt-9 flex items-center w-auto min-h-[120px] bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
+      <aside className="relative z-30 mt-9 flex items-center w-auto bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
         <p
           className="w-full text-center text-lg font-medium text-black"
           data-testid="error"
@@ -18,7 +18,7 @@ export const Details: React.FC<Props> = ({ data }) => {
     );
   } else if (data.status === "loading") {
     return (
-      <aside className="relative z-30 mt-9 flex items-center w-auto min-h-[120px] bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
+      <aside className="relative z-30 mt-9 flex items-center w-auto bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
         <p
           className="w-full text-center text-lg font-medium text-black"
           data-testid="loading"
@@ -29,7 +29,7 @@ export const Details: React.FC<Props> = ({ data }) => {
     );
   } else if (data.status === "error") {
     return (
-      <aside className="relative z-30 mt-9 flex items-center w-auto min-h-[120px] bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
+      <aside className="relative z-30 mt-9 flex items-center w-auto bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
         <p
           className="w-full text-center text-lg font-medium text-red-600"
           data-testid="invalid"
@@ -38,10 +38,21 @@ export const Details: React.FC<Props> = ({ data }) => {
         </p>
       </aside>
     );
+  } else if (data.status === "empty") {
+    return (
+      <aside className="relative z-30 mt-9 flex items-center w-auto bg-white rounded-lg shadow-md p-6 md:w-full md:min-h-fit">
+        <p
+          className="w-full text-center text-lg font-medium text-black-600"
+          data-testid="empty"
+        >
+          Type an IP address or domain to begin searching...
+        </p>
+      </aside>
+    );
   }
 
   return (
-    <aside className="relative z-30 mt-9 flex w-auto bg-white rounded-lg shadow-lg p-4 md:p-8">
+    <aside className="relative z-30 mt-9 flex w-auto bg-white rounded-lg shadow-md p-6 md:p-8">
       <ul className="space-y-4 md:space-y-0 md:divide-y md:divide-gray-200">
         {data.details.map((output, index) => (
           <li

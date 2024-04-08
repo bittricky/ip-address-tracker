@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Details, Search, Map } from "../../components";
 
 import { IPAddressData } from "../../types";
@@ -22,6 +22,10 @@ const initialState: IPAddressData = {
 const Home: React.FC = () => {
   const [ipData, setIpData] = useState<IPAddressData>(initialState);
   const [inputValue, setInputValue] = useState<string>("");
+
+  useEffect(() => {
+    fetchUserIp();
+  }, []);
 
   const fetchData = async (ip: string) => {
     try {
@@ -61,6 +65,22 @@ const Home: React.FC = () => {
     }
   };
 
+  const fetchUserIp = async () => {
+    fetch("https://api.ipify.org?format=json")
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Network response was not ok.");
+      })
+      .then((data) => {
+        setInputValue(data.ip);
+        fetchData(data.ip);
+      })
+      .catch((error) => {
+        console.error("Fetch User IP error:", error);
+        setIpData({ ...initialState, status: "error" });
+      });
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   };
@@ -74,16 +94,18 @@ const Home: React.FC = () => {
   return (
     <div className="app">
       <header
-        className="relative flex flex-col justify-between items-center w-full h-56 shadow-md text-black md:bg-auto md:bg-center lg:px-8"
+        className="relative flex flex-col justify-evenly items-center w-full h-56 shadow-lg text-black lg:bg-auto lg:bg-center lg:px-8"
         style={{ background: "#ffe100" }}
       >
-        <h1 className="font-normal text-xl">IP Address Tracker</h1>
+        <h1 className="font-normal text-2xl text-centers my-4">
+          IP Address Tracker
+        </h1>
         <Search
           ipAddress={inputValue}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
         />
-        {ipData.status !== "empty" && <Details data={ipData} />}
+        <Details data={ipData} />
       </header>
       <Map position={[ipData.location.lat, ipData.location.lng]} />
     </div>
