@@ -52,25 +52,19 @@ export const Details: React.FC<Props> = ({ data }) => {
   }
 
   return (
-    <aside className="relative z-30 mt-9 flex w-auto bg-white rounded-lg shadow-md p-6 md:p-8">
-      <ul className="space-y-4 md:space-y-0 md:divide-y md:divide-gray-200">
+    <aside className="relative z-10 mt-9 mx-auto bg-white rounded-lg shadow-md p-6">
+      <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {data.details.map((output, index) => (
           <li
             key={index}
-            className={`flex flex-col items-center space-y-2 p-2 md:flex-row md:items-start md:justify-between md:space-y-0 md:p-4 ${
-              index === 0 ? "rounded-tl-lg rounded-tr-lg" : ""
-            } ${
-              index === data.details.length - 1
-                ? "rounded-bl-lg rounded-br-lg"
-                : ""
-            }`}
+            className={`flex flex-col justify-between p-4 ${
+              index !== data.details.length - 1 ? "border-b md:border-b-0" : ""
+            } md:border-r border-gray-200 last:md:border-r-0`}
           >
-            <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider md:text-xs lg:text-sm">
+            <h2 className="text-xs font-medium text-gray-500 uppercase tracking-widest mb-2">
               {output.heading}
             </h2>
-            <p className="text-lg font-bold text-gray-800 md:text-base lg:text-lg">
-              {output.body}
-            </p>
+            <p className="text-lg font-bold text-gray-900">{output.body}</p>
           </li>
         ))}
       </ul>

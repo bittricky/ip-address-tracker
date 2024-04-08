@@ -19,6 +19,11 @@ const initialState: IPAddressData = {
   },
 };
 
+const URL_REGEX =
+  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})(:[0-9]+)?(\/[\w\.-]*)*\/?$/;
+const IP_REGEX =
+  /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+
 const Home: React.FC = () => {
   const [ipData, setIpData] = useState<IPAddressData>(initialState);
   const [inputValue, setInputValue] = useState<string>("");
@@ -28,40 +33,42 @@ const Home: React.FC = () => {
   }, []);
 
   const fetchData = async (ip: string) => {
-    try {
-      setIpData({ ...initialState, status: "loading" });
+    if (URL_REGEX.test(ip) || IP_REGEX.test(ip)) {
+      try {
+        setIpData({ ...initialState, status: "loading" });
 
-      const response = await fetch(`/api?ip=${ip}`, {
-        method: "GET",
-      });
+        const response = await fetch(`/api?ip=${ip}`, {
+          method: "GET",
+        });
 
-      const { data } = await response.json();
+        const { data } = await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.message || "An error occurred while fetching the data."
-        );
-      }
+        if (!response.ok) {
+          throw new Error(
+            data.message || "An error occurred while fetching the data."
+          );
+        }
 
-      setIpData({
-        status: "loaded",
-        details: [
-          { heading: "IP Address", body: data.ip || "N/A" },
-          {
-            heading: "Location",
-            body: `${data.location.city}, ${data.location.region}, ${data.location.country}`,
+        setIpData({
+          status: "loaded",
+          details: [
+            { heading: "IP Address", body: data.ip || "N/A" },
+            {
+              heading: "Location",
+              body: `${data.location.city}, ${data.location.region}, ${data.location.country}`,
+            },
+            { heading: "Timezone", body: `UTC ${data.location.timezone}` },
+            { heading: "ISP", body: data.isp },
+          ],
+          location: {
+            lat: data.location.lat,
+            lng: data.location.lng,
           },
-          { heading: "Timezone", body: `UTC ${data.location.timezone}` },
-          { heading: "ISP", body: data.isp },
-        ],
-        location: {
-          lat: data.location.lat,
-          lng: data.location.lng,
-        },
-      });
-    } catch (error) {
-      console.error("Fetch error:", error);
-      setIpData({ ...initialState, status: "error" });
+        });
+      } catch (error) {
+        console.error("Fetch error:", error);
+        setIpData({ ...initialState, status: "error" });
+      }
     }
   };
 
