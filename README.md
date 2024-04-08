@@ -2,7 +2,7 @@
 
 > Simple application to get the geolocation of an IP Address
 
-## Prerequisites
+### Prerequisites
 
 Ensure you have the following installed on your system
 
@@ -21,7 +21,7 @@ or
 $ yarn install
 ```
 
-## Environment configuration
+### Environment configuration
 
 The application utilizes [geo.ipify.org](https://geo.ipify.org/) API to geolocate the location from the ip address. You will need to have an API key from the service to make successful request.
 
@@ -31,7 +31,7 @@ Once you have acquired an API key for geo.ipify.org add a `.env` file to the roo
 IPIFY_API_KEY=<IPIFY_API_KEY>
 ```
 
-## Development
+### Development
 
 Run the development server:
 
@@ -47,7 +47,7 @@ $ yarn dev
 
 This will start the server on [port 3000](https://localhost:3000). Open this url in your browser to view the application.
 
-## Production
+### Production
 
 To create a production build of the application:
 
